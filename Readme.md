@@ -47,7 +47,28 @@ The code for __"master"__ branch will be published in https://leanix.github.io/l
 
 ### using git post-commit hook
 
-* create a post-commit hook (an executable file under .git/hooks/post-commit from build.sh)
+* Create a post-commit hook (an executable file under .git/hooks/post-commit):
+
+```bash
+#!/bin/sh
+branch=$(git rev-parse --abbrev-ref HEAD)
+if [ "gh-pages" == "$branch" ]; then
+    exit
+fi
+
+echo Updating gh-pages for branch $branch
+
+git checkout gh-pages
+git checkout $branch -- dist
+mkdir -p $branch
+git rm --ignore-unmatch -rf $branch
+mv -f dist/* $branch
+git rm -rf --ignore-unmatch dist
+git add $branch
+git describe --always | git commit -m -
+git checkout $branch
+```
+
 * build for production `gulp build`
 * commit (hooks runs afterwards)
 * `git push` (pushes both your branch and the gh-pages branch)
@@ -55,7 +76,7 @@ The code for __"master"__ branch will be published in https://leanix.github.io/l
 ### without hooks
 
 * build for production `gulp build`
-* commit (hooks runs afterwards)
+* commit
 * run build.sh
 * `git push` (pushes both your branch and the gh-pages branch)
 
