@@ -4,11 +4,27 @@ This project is a custom dashboard for [LeanIX EAM](https://www.leanix.net/en/pr
 
 ![Screenshot](https://raw.githubusercontent.com/leanix/leanix-dashboard-as/master/docs/screen.png)
 
-## Usage
+## Usage / Integration
 
-In the production environment the plugin needs to be enabled by LeanIX support. However, the plugin is an AngularJS app which just needs two query parameters to work: token and baseUrl.
+LeanIX support requires an URL to the custom dashboard. It must match the following requirements:
 
-## How to run
+* accessible via ssl (https://...)
+* provide an url to a file if possible to prevent unwanted redirects (e.g. url ends on .../index.html)
+* should be publicly accessible on host (having to go through basic auth etc. can be cumbersome for end users)
+
+Example: https://leanix.github.io/leanix-dashboard-as/master/index.html
+
+
+## Development
+
+### How to run
+
+In the production environment the plugin needs to be enabled by LeanIX support. However, the plugin is an AngularJS app which just needs two query parameters to work: 
+
+* token: an OAuth2 token for authentication (passed automatically by EAM)
+* baseUrl: the base url of the workspace to work on (passed automatically by EAM)
+
+### How to build
 
 You need Node installed, and npm (comes with node). 
 
@@ -22,7 +38,10 @@ then run
 
 Start the web server with `gulp serve`.
 
-## Deploy a new version (develop or master branch)
+## Deploy a new version on GitHub
+
+* build and ensure to check in the build
+* commit and ensure changes go into gh-pages branch (see below)
 
 The code for __"master"__ branch will be published in https://leanix.github.io/leanix-dashboard-as/master.
 
@@ -39,6 +58,8 @@ The code for __"master"__ branch will be published in https://leanix.github.io/l
 * commit (hooks runs afterwards)
 * run build.sh
 * `git push` (pushes both your branch and the gh-pages branch)
+
+
 
 ## License
 
