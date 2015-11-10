@@ -66,8 +66,9 @@ angular.module('app')
                     $scope.maxInterfacesAppName = interfaceData.maxInterfacesAppName;
                     $scope.baseUrl = $routeParams.baseUrl;
 
-                    if (config.workspace != null)
+                    try {
                         $scope.color = config.workspace.objectTypes.services.color;
+                    } catch (error) {}
 
                     return response;
                 });

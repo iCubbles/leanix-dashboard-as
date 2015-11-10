@@ -2,9 +2,9 @@ angular.module('app')
 .directive('components', function () {
 
     var qualityData = function (amount, name) {
-        this.amount = amount,
-            this.name = name
-    }
+        this.amount = amount;
+        this.name = name;
+    };
 
     var getComponentsData = function (response) {
         var componentsData = {};
@@ -21,7 +21,6 @@ angular.module('app')
                 ++noLifecycle;
             }
 
-            var resourceCap = response[i].resourceHasResourceCapabilities;
             if (resourceCap && resourceCap.length !== 0) {
                 if (resourceCap[0].supportTypeID > 0) {
                     ++noSupport;
@@ -34,18 +33,18 @@ angular.module('app')
         componentsData.noSupport = response.length - noSupport;
 
         return componentsData;
-    }
+    };
 
     var createResourceMap = function (response) {
         var resourceIdMap = {};
         var data = response.data;
         //iterate through response.data object
-        for (element in data) {
+        for (var element in data) {
             if (data[element].serviceHasResources && data[element].serviceHasResources.length > 0) {
                 var serviceHasResources = data[element].serviceHasResources;
 
                 //iterate through serviceHasResources Object
-                for (serviceElement in serviceHasResources) {
+                for (var serviceElement in serviceHasResources) {
                     var resourceID = serviceHasResources[serviceElement].resourceID;
 
                     //if resourceID doesnt exist in Map set count to 1
@@ -60,19 +59,19 @@ angular.module('app')
             }
         }
         return resourceIdMap;
-    }
+    };
 
     var getMostUsedResourceObject = function (resourceMap) {
         var maxOccurences = 0;
         var resourceID = 0;
-        for (resource in resourceMap) {
+        for (var resource in resourceMap) {
             if (resourceMap[resource] > maxOccurences) {
                 maxOccurences = resourceMap[resource];
                 resourceID = resource;
             }
         }
         return new Object({"resourceID": resourceID, "occurences": maxOccurences});
-    }
+    };
 
     var getDateAsString = function (date) {
         var year = date.getFullYear();
@@ -82,7 +81,7 @@ angular.module('app')
         day = day.slice(-2, (day.length - 2) + 3);
 
         return day + '.' + month + '.' + year;
-    }
+    };
 
     return {
         restrict: 'E',
@@ -109,15 +108,17 @@ angular.module('app')
                     $scope.date = getDateAsString(new Date());
                     $scope.baseUrl = $routeParams.baseUrl;
 
-                    if (config.workspace != null)
+                    try {
                         $scope.color = config.workspace.objectTypes.resources.color;
+                    } catch (error) {}
+
                     return response;
                 });
 
             var date = new Date();
             date.setMonth(date.getMonth() - 1);
             var activityParams = new Object({
-                "startDate": date.toString(),
+                "startDate": date.toISOString(),
                 "factSheetType": "resources",
                 "eventType": "OBJECT_CREATE",
                 "countOnly": "1"

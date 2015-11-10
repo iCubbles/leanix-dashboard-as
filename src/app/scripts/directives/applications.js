@@ -2,9 +2,9 @@ angular.module('app')
 .directive('applications', function () {
 
     var qualityData = function (amount, name) {
-        this.amount = amount,
-            this.name = name
-    }
+        this.amount = amount;
+        this.name = name;
+    };
 
     var getApplicationsData = function (response) {
         var appData = {};
@@ -41,7 +41,7 @@ angular.module('app')
         appData.noResources = noResources;
         appData.noResponsibles = noResponsibles;
         return appData;
-    }
+    };
 
     var getDateAsString = function (date) {
         var year = date.getFullYear();
@@ -51,7 +51,7 @@ angular.module('app')
         day = day.slice(-2, (day.length - 2) + 3);
 
         return day + '.' + month + '.' + year;
-    }
+    };
 
     return {
         restrict: 'E',
@@ -74,15 +74,17 @@ angular.module('app')
                     $scope.quality.push(new qualityData(appData.noDocuments, 'Anzahl der Applikationen ohne Dokumente'));
                     $scope.quality.push(new qualityData(appData.noResources, 'Anzahl der Applikationen ohne IT Komponenten'));
 
-                    if (config.workspace != null)
+                    try {
                         $scope.color = config.workspace.objectTypes.services.color;
+                    } catch (error) {}
+
                 });
 
 
             var date = new Date();
             date.setMonth(date.getMonth() - 1);
             var activityParams = new Object({
-                "startDate": date.toString(),
+                "startDate": date.toISOString(),
                 "factSheetType": "services",
                 "eventType": "OBJECT_CREATE",
                 "countOnly": "1"
