@@ -117,7 +117,7 @@ angular.module('app')
             var date = new Date();
             date.setMonth(date.getMonth() - 1);
             var activityParams = new Object({
-                "startDate": date.toString(),
+                "startDate": date.toISOString(),
                 "factSheetType": "resources",
                 "eventType": "OBJECT_CREATE",
                 "countOnly": "1"
