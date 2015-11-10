@@ -25,7 +25,7 @@ angular.module('app')
         providerData.providerIDMaxResource = providerIDMaxResource;
         providerData.providerNameMaxResource = providerNameMaxResource;
         return providerData;
-    }
+    };
 
     var getDateAsString = function (date) {
         var year = date.getFullYear();
@@ -35,7 +35,7 @@ angular.module('app')
         day = day.slice(-2, (day.length - 2) + 3);
 
         return day + '.' + month + '.' + year;
-    }
+    };
 
     return {
         restrict: 'E',
@@ -62,8 +62,10 @@ angular.module('app')
                     $scope.providerIDMaxResource = providerData.providerIDMaxResource;
                     $scope.providerNameMaxResource = providerData.providerNameMaxResource;
 
-                    if (config.workspace != null)
+                    try {
                         $scope.color = config.workspace.objectTypes.providers.color;
+                    } catch (error) {}
+
 
                     return response;
                 });
