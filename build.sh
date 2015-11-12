@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 branch=$(git rev-parse --abbrev-ref HEAD)
 if [ "gh-pages" == "$branch" ]; then
     exit
