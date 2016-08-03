@@ -11,8 +11,8 @@ angular.module('app')
         var ids = [];
 
         for (i = 0; i < response.length; ++i) {
-            if (response[i].serviceHasInterfaces) {
-                var interfaces = response[i].serviceHasInterfaces.length;
+            if (response[i].factSheetHasIfaceProviders) {
+                var interfaces = response[i].factSheetHasIfaceProviders.length;
                 countInterfaces += interfaces;
                 ids.push(response[i].ID);
                 if (interfaces > maxInterfaces) {
@@ -23,6 +23,7 @@ angular.module('app')
                 }
             }
         }
+
         interfaceData.averageCount = Math.round(countInterfaces / response.length);
         interfaceData.maxInterfaces = maxInterfaces;
         interfaceData.maxInterfacesAppID = maxInterfacesAppID;
