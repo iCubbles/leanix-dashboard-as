@@ -30,6 +30,14 @@
 					<span class="col-md-9 col-sm-12 right-container">{{row.name}}</span>
 				</li>
 			</ul>
+			<div ng-if="showPieChart">
+				<!--  using a cubbles pie chart component -->
+				<pie-chart>
+					<cubx-core-init style="display:none;">
+						<cubx-core-slot-init slot="dataColumns">{{pieChartData}}</cubx-core-slot-init>
+					</cubx-core-init>
+				</pie-chart>
+			</div>
 		</div>
 		<div class="infos">
 			<ul ng-if="maxInterfacesAppID">

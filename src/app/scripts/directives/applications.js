@@ -8,11 +8,13 @@ angular.module('app')
 
     var getApplicationsData = function (response) {
         var appData = {};
+        var now = Date.now();
         var count = 0;
         var noInterfaces = 0;
         var noDocuments = 0;
         var noResources = 0;
         var noResponsibles = 0;
+        var noBrokenQualitySeals = 0;
 
         for (i = 0; i < response.length; ++i) {
             if (response[i].serviceHasInterfaces && response[i].serviceHasInterfaces.length === 0) {
@@ -34,12 +36,19 @@ angular.module('app')
                 if (noResponsible)
                     ++noResponsibles;
             }
+            if (response[i].qualitySealExpiry && response[i].qualitySealExpiry.length > 0) {
+                var qualitySealExpiry = new Date(response[i].qualitySealExpiry);
+                if (now > qualitySealExpiry.getTime()) {
+                    noBrokenQualitySeals++;
+                }
+            }
         }
         appData.count = response.length;
         appData.noInterfaces = noInterfaces;
         appData.noDocuments = noDocuments;
         appData.noResources = noResources;
         appData.noResponsibles = noResponsibles;
+        appData.noBrokenQualitySeals = noBrokenQualitySeals;
         return appData;
     };
 
@@ -73,6 +82,18 @@ angular.module('app')
                     $scope.quality.push(new qualityData(appData.noInterfaces, 'Anzahl der Applikationen ohne Schnittstellen'));
                     $scope.quality.push(new qualityData(appData.noDocuments, 'Anzahl der Applikationen ohne Dokumente'));
                     $scope.quality.push(new qualityData(appData.noResources, 'Anzahl der Applikationen ohne IT Komponenten'));
+
+                    // add broken quality
+                    $scope.quality.push(new qualityData(appData.noBrokenQualitySeals, 'Anzahl der Applikation mit gebrochenem Qualitiy Seal'));
+                    // show cubbles pie chart
+                    $scope.showPieChart = true;
+                    $scope.pieChartData = JSON.stringify([
+                        ['Quality Seal ok', appData.count - appData.noBrokenQualitySeals],
+                        ['Quality Seal gebrochen', appData.noBrokenQualitySeals]
+                    ]);
+
+                    document.dispatchEvent(new CustomEvent('startCubbles'));
+
 
                     try {
                         $scope.color = config.workspace.objectTypes.services.color;

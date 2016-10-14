@@ -5,6 +5,25 @@
     <title>Axel Springer LeanIX Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- add cubbles runtime -->
+    <script>
+        window.cubx = {
+            CRCInit: {
+                rootDependencies: [
+                    {
+                        webpackageId: 'com.incowia.lib.chart-library@0.2.0-SNAPSHOT',
+                        artifactId: 'pie-chart'
+                    }
+                ]
+            }
+        };
+    </script>
+    <script src="https://cubbles.world/sandbox/cubx.core.rte@2.0.2/webcomponents-lite/webcomponents-lite.js"></script>
+    <script src="https://cubbles.world/sandbox/cubx.core.rte@2.0.2/crc-loader/js/main.js"
+            data-cubx-startevent="startCubbles"
+            data-crcinit-loadcif="true">
+    </script>
+
     <!-- bower doesn't do paths correctly, so getting it from cdn instead -->
     <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
 
